@@ -44,8 +44,10 @@ SPIDER_MIDDLEWARES = {
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
+   'spider.middlewares.UADownloaderMiddleware': 541,
    'spider.middlewares.SpiderDownloaderMiddleware': 542,
    'spider.middlewares.RetryRecordMiddleware': 543,
+
 }
 
 # Enable or disable extensions

@@ -20,9 +20,9 @@ class OraclePipline(object):
         self.settings = get_project_settings()
         self.spidertype = self.settings.get('SPIDER_TYPE')
         if self.spidertype == 1:
-            table = 't_amarc_fund'
+            table = 't_amac_fund'
         else:
-            table = 't_amarc_manage'
+            table = 't_amac_manage'
         self.cursor.execute("truncate table "+table+"")
         self.conn.commit()
 
@@ -32,7 +32,7 @@ class OraclePipline(object):
 
         if self.spidertype == 1:
             # t_amarc_manager_updates
-            sql = 'insert into t_amarc_fund_updates ' \
+            sql = 'insert into t_amac_fund_updates ' \
                   '(' \
                   'FUNDNAME, FUNDID, CHENGLI, BEIAN, BEIAN_JD, FUNDTYPE, BIZHONG, FUNDMANAGE,	MANAGETYPE,	' \
                   'TUOGUANMANAGE, STATUS, LASTUPDATETIME, REMARK, MONTH_R, HALFY_R, YEAR_R, QUARTER_R,	' \
@@ -47,7 +47,7 @@ class OraclePipline(object):
             ]
         elif self.spidertype == 0:
             # t_amarc_fund_updates
-            sql = 'insert into t_amarc_manage(ID,MANAGERNAME,ARTIFICIALPERSONNAME,REGISTERNO,ESTABLISHDATE,' \
+            sql = 'insert into t_amac_manage(ID,MANAGERNAME,ARTIFICIALPERSONNAME,REGISTERNO,ESTABLISHDATE,' \
                   'MANAGERHASPRODUCT,URL,REGISTERDATE,REGISTERADDRESS,REGISTERPROVINCE,REGISTERCITY,REGADRAGG,' \
                   'FUNDCOUNT,FUNDSCALE,PAIDINCAPITAL,SUBSCRIBEDCAPITAL,HASSPECIALTIPS,INBLACKLIST,HASCREDITTIPS,' \
                   'REGCOORDINATE,OFFICECOORDINATE,OFFICEADDRESS,OFFICEPROVINCE,OFFICECITY,PRIMARYINVESTTYPE,' \
@@ -82,5 +82,5 @@ class OraclePipline(object):
         self.conn.close()
 
     def getconn(self):
-        conn = cx_Oracle.connect('dftg/dftg@localhost/orcl')  # 连接数据库
+        conn = cx_Oracle.connect('username/password@localhost/orcl')  # 连接数据库
         return conn

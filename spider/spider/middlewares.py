@@ -14,6 +14,33 @@ import sys
 sys.setrecursionlimit(5000)
 
 
+class UADownloaderMiddleware(object):
+    key_name = 'UserAgent'
+    ua_list = []
+
+    def __init__(self):
+        # redis = RedisUtil()
+        # self.client = redis.get_client()
+
+        # length = self.client.llen(self.key_name)
+        # if length == 0:
+            try:
+                ua = UserAgent().data['browsers'].values()
+                for u in ua:
+                    self.ua_list.extend(u)
+                for u in self.ua_list:
+                    self.client.lpush(self.key_name, u)
+            except Exception as e:
+                print(e)
+
+        # self.ua_list = self.client.lrange(self.key_name, 0, length)
+        # redis.close_client()
+
+    def process_request(self, request, spider):
+        request.headers['User-Agent'] = random.choice(self.ua_list)
+
+
+
 class SpiderSpiderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the spider middleware does not modify the

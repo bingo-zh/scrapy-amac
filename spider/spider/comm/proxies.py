@@ -3,9 +3,6 @@
 """
 @version: 0.1
 @author: zhangwb
-@license: Apache Licence
-@file: proxies.py.py
-@time: 2018/12/25/025 09:24
 """
 import json
 import os

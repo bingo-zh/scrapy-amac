@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 # encoding: utf-8
-
+"""
+@version: 0.1
+@author: zhangwb
+导出字段排序
+"""
 from scrapy.conf import settings
 from scrapy.exporters import CsvItemExporter
 
