@@ -5,7 +5,7 @@
 @author: zhangwb
 导出字段排序
 """
-from scrapy.conf import settings
+from scrapy import settings
 from scrapy.exporters import CsvItemExporter
 
 

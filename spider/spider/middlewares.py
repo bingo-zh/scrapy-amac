@@ -10,6 +10,7 @@ from scrapy.utils.project import get_project_settings
 from fake_useragent import UserAgent
 from spider.comm.proxies import Proxies
 from scrapy.downloadermiddlewares.retry import RetryMiddleware
+import random
 import sys
 sys.setrecursionlimit(5000)
 
