@@ -5,41 +5,29 @@
 # See documentation in:
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
-from scrapy import signals
-from scrapy.utils.project import get_project_settings
-from fake_useragent import UserAgent
-from spider.comm.proxies import Proxies
-from scrapy.downloadermiddlewares.retry import RetryMiddleware
 import random
 import sys
+
+from scrapy import signals
+from scrapy.downloadermiddlewares.retry import RetryMiddleware
+from scrapy.utils.project import get_project_settings
+
+from .util.UserAgentUtil import UserAgentUtil
+
 sys.setrecursionlimit(5000)
 
 
 class UADownloaderMiddleware(object):
-    key_name = 'UserAgent'
     ua_list = []
 
     def __init__(self):
-        # redis = RedisUtil()
-        # self.client = redis.get_client()
-
-        # length = self.client.llen(self.key_name)
-        # if length == 0:
-            try:
-                ua = UserAgent().data['browsers'].values()
-                for u in ua:
-                    self.ua_list.extend(u)
-                for u in self.ua_list:
-                    self.client.lpush(self.key_name, u)
-            except Exception as e:
-                print(e)
-
-        # self.ua_list = self.client.lrange(self.key_name, 0, length)
-        # redis.close_client()
+        try:
+            self.ua_list = UserAgentUtil().getUA()['useragent']
+        except Exception as e:
+            print(e)
 
     def process_request(self, request, spider):
         request.headers['User-Agent'] = random.choice(self.ua_list)
-
 
 
 class SpiderSpiderMiddleware(object):
@@ -96,7 +84,14 @@ class SpiderDownloaderMiddleware(object):
     # passed objects.
     settings = get_project_settings()
     is_random_ua = settings.get('IS_RANDOM_UA')
-    is_random_proxy = settings.get('IS_RANDOM_PROXY')
+    ua_list = []
+
+    def __init__(self):
+        try:
+            self.ua_list = UserAgentUtil().getUA()['useragent']
+        except Exception as e:
+            print(e)
+
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -116,15 +111,11 @@ class SpiderDownloaderMiddleware(object):
         # - or raise IgnoreRequest: process_exception() methods of
         #   installed downloader middleware will be called
         if self.is_random_ua == 1:
-                u = UserAgent().random
+            u = random.choice(self.ua_list)
         else:
-                u = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' \
-                    ' (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36'
+            u = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' \
+                ' (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36'
         request.headers['User-Agent'] = u
-
-        if self.is_random_proxy == 1:
-            proxy = Proxies().getProxy()
-            request.meta['proxy'] = proxy
 
     def process_response(self, request, response, spider):
         # Called with the response returned from the downloader.
@@ -168,4 +159,3 @@ class RetryRecordMiddleware(RetryMiddleware):
         of = open(path, 'a')
         of.write('%s\n' % ''.join(failed_list))
         of.close()
-

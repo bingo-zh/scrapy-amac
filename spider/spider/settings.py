@@ -1,15 +1,11 @@
 # -*- coding: utf-8 -*-
-#from spider.spider.pipelines import OraclePipline
 
 BOT_NAME = 'spider'
 
 SPIDER_MODULES = ['spider.spiders']
 NEWSPIDER_MODULE = 'spider.spiders'
-IS_RANDOM_UA = 0  # 随机User-Agent
-IS_RANDOM_PROXY = 0  # 随机代理
+IS_RANDOM_UA = 1  # 随机User-Agent
 SPIDER_TYPE = 0  # 0:管理人(manager),1:产品(fund)
-
-#USER_AGENT = 'spider (+http://www.yourdomain.com)'
 
 ROBOTSTXT_OBEY = True
 
@@ -38,7 +34,7 @@ ROBOTSTXT_OBEY = True
 # Enable or disable spider middlewares
 # See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 SPIDER_MIDDLEWARES = {
-   'spider.middlewares.SpiderSpiderMiddleware': 543,
+   # 'spider.middlewares.SpiderSpiderMiddleware': 543,
 }
 
 # Enable or disable downloader middlewares
